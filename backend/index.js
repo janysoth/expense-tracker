@@ -24,6 +24,19 @@ const app = express();
 
 const httpServer = http.createServer(app);
 
+// Create a store
+const MongoDBStore = connectMongo(session);
+
+const store = new MongoDBStore({
+  uri: process.env.MONGODB_URI,
+  collection: "sessions",
+});
+
+// To handling any error
+store.on("error", (err) => console.log(err));
+
+
+
 const server = new ApolloServer({
   typeDefs: mergedTypeDefs,
   resolvers: mergedResolvers,

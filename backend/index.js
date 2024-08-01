@@ -28,7 +28,7 @@ const httpServer = http.createServer(app);
 const MongoDBStore = connectMongo(session);
 
 const store = new MongoDBStore({
-  uri: process.env.MONGODB_URI,
+  uri: process.env.MONGO_URI,
   collection: "sessions",
 });
 

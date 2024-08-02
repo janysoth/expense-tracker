@@ -49,16 +49,24 @@ const userResolver = {
 
         return user;
       } catch (err) {
-        console.log("Error in login", err);
+        console.log("Error in login:", err);
         throw new Error(err.message || "Internal Server Error");
       }
     }, // End of login function
 
-    logout: async (_, _, context) => {
+    logout: async (_, __, context) => {
       try {
+        await context.logout();
 
+        context.req.session.destroy((err) => {
+          if (err) throw err;
+        });
+
+        context.res.clearCookie("connect.sid");
+
+        return { message: "Logged out successfully." };
       } catch (err) {
-        console.log("Error in logout", err);
+        console.log("Error in logout:", err);
         throw new Error(err.message || "Internal Server Error");
       }
     }, // End of logout function

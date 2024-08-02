@@ -11,6 +11,8 @@ import { ApolloServer } from "@apollo/server";
 import { expressMiddleware } from "@apollo/server/express4";
 import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
 
+import { buildContext } from "graphql-passport";
+
 import mergedResolvers from "./resolvers/index.js";
 import mergedTypeDefs from "./typeDefs/index.js";
 
@@ -35,7 +37,22 @@ const store = new MongoDBStore({
 // To handling any error
 store.on("error", (err) => console.log(err));
 
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      maxAge: 1000 * 60 * 60 * 24 * 7,
+      httpOnly: true,
+    },
+    store: store
+  })
+);
 
+// Initialize the passport
+app.use(passport.initialize());
+app.use(passport.session());
 
 const server = new ApolloServer({
   typeDefs: mergedTypeDefs,
@@ -50,12 +67,15 @@ await server.start();
 // and our expressMiddleware function.
 app.use(
   "/",
-  cors(),
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  }),
   express.json(),
   // expressMiddleware accepts the same arguments:
   // an Apollo Server instance and optional configuration options
   expressMiddleware(server, {
-    context: async ({ req }) => ({ req }),
+    context: async ({ req, res }) => buildContext({ req, res }),
   })
 );
 

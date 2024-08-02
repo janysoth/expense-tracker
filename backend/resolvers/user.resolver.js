@@ -39,7 +39,29 @@ const userResolver = {
       }
     }, //End of signUp function
 
+    login: async (_, { input }, context) => {
+      try {
+        const { username, password } = input;
+        if (!username || !password) throw new Error("All Fields are required.");
 
+        const { user } = await context.authenticate("graphql-local", { username, password });
+        await context.login(user);
+
+        return user;
+      } catch (err) {
+        console.log("Error in login", err);
+        throw new Error(err.message || "Internal Server Error");
+      }
+    }, // End of login function
+
+    logout: async (_, _, context) => {
+      try {
+
+      } catch (err) {
+        console.log("Error in logout", err);
+        throw new Error(err.message || "Internal Server Error");
+      }
+    }, // End of logout function
   },
   Query: {
     users: (_, _, { req, res }) => {

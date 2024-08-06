@@ -34,7 +34,7 @@ const userResolver = {
 
         return newUser;
       } catch (err) {
-        console.log("Error in signUp: ", err);
+        console.error("Error in signUp: ", err);
         throw newError(err.message || "Internal Server Error");
       }
     }, //End of signUp function
@@ -49,7 +49,7 @@ const userResolver = {
 
         return user;
       } catch (err) {
-        console.log("Error in login:", err);
+        console.error("Error in login:", err);
         throw new Error(err.message || "Internal Server Error");
       }
     }, // End of login function
@@ -66,7 +66,7 @@ const userResolver = {
 
         return { message: "Logged out successfully." };
       } catch (err) {
-        console.log("Error in logout:", err);
+        console.error("Error in logout:", err);
         throw new Error(err.message || "Internal Server Error");
       }
     }, // End of logout function
@@ -82,10 +82,17 @@ const userResolver = {
       }
     },
 
-    user: (_, { userId }) => {
-      return users.find((user) => user._id === userId);
+    user: async (_, { userId }) => {
+      try {
+        const user = await User.findById(userId);
+        return user;
+      } catch (err) {
+        console.error("Error in user query: ", err);
+        throw new Error(err.message || "Error getting user");
+      }
     }
   },
+  // TODO => ADD USER/TRANSACTION RELATIONSHIP
 };
 
 export default userResolver;

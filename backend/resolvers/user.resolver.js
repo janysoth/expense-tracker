@@ -72,8 +72,14 @@ const userResolver = {
     }, // End of logout function
   },
   Query: {
-    users: (_, _, { req, res }) => {
-      return users;
+    authUser: async (_, __, context) => {
+      try {
+        const user = await context.getUser();
+        return user;
+      } catch (err) {
+        console.error("Error in authUser: ", err);
+        throw new Error("Internal Server Error");
+      }
     },
 
     user: (_, { userId }) => {

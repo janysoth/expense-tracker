@@ -56,6 +56,17 @@ const transactionResolver = {
         console.error("Error updating a transaction: ", err);
         throw new Error("Error updating a transaction");
       }
+    },
+
+    deleteTransaction: async (_, { transactionId }) => {
+      try {
+        const deleteTransaction = await Transaction.findByIdAndDelete(transactionId);
+
+        return deleteTransaction;
+      } catch (err) {
+        console.error("Error deleting a transaction: ", err);
+        throw new Error("Error deleting a transaction");
+      }
     }
   },
 };

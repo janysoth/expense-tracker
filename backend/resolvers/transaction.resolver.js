@@ -29,6 +29,7 @@ const transactionResolver = {
     // TODO => ADD categoryStatistics query
 
   },
+
   Mutation: {
     createTransaction: async (_, { input }, context) => {
       try {
@@ -69,6 +70,8 @@ const transactionResolver = {
       }
     }
   },
+
+  // TODO => ADD USER/TRANSACTION RELATIONSHIP
 };
 
 export default transactionResolver;

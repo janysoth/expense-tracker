@@ -24,10 +24,27 @@ const transactionResolver = {
         console.error("Error getting a transaction: ", err);
         throw new Error("Error getting a transaction");
       }
-    }
+    },
+
+    // TODO => ADD categoryStatistics query
 
   },
-  Mutation: {},
+  Mutation: {
+    createTransaction: async (_, { input }, context) => {
+      try {
+        const newTransaction = new Transaction({
+          ...input,
+          userId: context.getUser()._id,
+        });
+
+        await newTransaction.save();
+        return newTransaction;
+      } catch (err) {
+        console.error("Error creating a transaction: ", err);
+        throw new Error("Error creating a transaction");
+      }
+    }
+  },
 };
 
 export default transactionResolver;

@@ -1,10 +1,21 @@
-
+import { Route, Routes } from 'react-router-dom';
+import HomePage from './pages/HomePage';
+import LoginPage from './pages/LoginPage';
+import NotFoundPage from './pages/NotFoundPage';
+import SignUpPage from './pages/SignUpPage';
+import TransactionPage from './pages/TransactionPage';
 
 function App() {
 
   return (
     <>
-      <h1 className="text-red-500 text-5xl bg-blue-500">Hello</h1>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<SignUpPage />} />
+        <Route path="transaction/:id" element={<TransactionPage />} />
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
     </>
   );
 }

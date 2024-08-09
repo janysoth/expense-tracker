@@ -7,7 +7,7 @@ import TransactionPage from './pages/TransactionPage';
 import Header from './components/ui/Header';
 
 function App() {
-  const authUser = false;
+  const authUser = true;
 
   return (
     <>

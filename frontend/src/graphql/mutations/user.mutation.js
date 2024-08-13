@@ -10,3 +10,13 @@ export const SIGN_UP = gql`
   }
 `;
 
+export const LOGIN = gql`
+  mutation Login($input: LoginInput!) {
+    login(input: $input) {
+      _id
+      name
+      username
+    }
+  }
+`;
+
